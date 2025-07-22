@@ -1,0 +1,43 @@
+<div class="post">
+  <h2>{{title}}</h2>
+  <p>{{content}}</p>
+
+  <button
+    class="edit-post-button"
+    data-id="{{id}}"
+    data-title="{{title}}"
+    data-content="{{content}}"
+  >
+    Редагувати
+  </button>
+
+  <button class="delete-post-button" data-id="{{id}}">Видалити</button>
+
+  <div class="comments-container" data-id="{{id}}">
+    <h3>Коментарі:</h3>
+    <ul class="comments-list">
+      {{#each comments}}
+        <li>
+          <span class="comment-username">{{this.username}}:</span>
+          <span class="comment-text">{{this.text}}</span>
+        </li>
+      {{/each}}
+    </ul>
+
+    <form class="create-comment-form">
+      <input
+        type="text"
+        class="comment-user"
+        placeholder="Введіть своє ім'я"
+        required
+      />
+      <input
+        type="text"
+        class="comment-input"
+        placeholder="Новий коментар"
+        required
+      />
+      <button class="create-comment" type="submit">Додати коментар</button>
+    </form>
+  </div>
+</div>

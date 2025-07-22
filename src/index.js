@@ -148,7 +148,7 @@ document.addEventListener("submit", async (event) => {
     commentInput.value = "";
     if (postId && commentText && commentUser) {
       await createComment(postId, { username: commentUser, text: commentText });
-      const posts = await getPosts(currentPage, postsPerPage);
+      const posts = await getPosts(1, currentPage * postsPerPage);
       container.innerHTML = "";
       renderPosts(posts);
     }

@@ -9,6 +9,9 @@ const search = document.querySelector("#search-input");
 
 let editingPostId = null;
 
+let totalPostsCount = 0;
+
+
 const postsPerPage = 3;
 let currentPage = 1;
 
@@ -46,7 +49,22 @@ loadMoreBtn.addEventListener("click", async () => {
   currentPage++;
   const newPosts = await getPosts(currentPage, postsPerPage);
   renderPosts(newPosts);
+  checkLoadMoreVisibility();
 });
+
+function checkLoadMoreVisibility() {
+const shownPosts = currentPage * postsPerPage;
+if (shownPosts >= totalPostsCount) {
+  loadMoreBtn.disabled = true;
+    loadMoreBtn.textContent = `Пости закінчились, всього було ${totalPostsCount} пости`;
+    loadMoreBtn.style.backgroundColor = "#D8BFD8"
+} else {
+  loadMoreBtn.disabled = false;
+    loadMoreBtn.textContent = `Завантажити ще`;
+    loadMoreBtn.style.backgroundColor = "#6200ea"
+}
+}
+
 
 formOfPosts.addEventListener("submit", async (event) => {
   event.preventDefault();
@@ -115,6 +133,13 @@ async function deletePost(id) {
     console.log("Помилка при видаленні поста", error);
   }
 }
+
+async function fetchTotalPostsCount() {
+  const response = await fetch(`https://687cb03f918b6422432f16f9.mockapi.io/posts`);
+  const data = await response.json();
+  totalPostsCount = data.length;
+}
+
 
 async function updatePost(id, title, content) {
   try {
@@ -194,8 +219,10 @@ document.addEventListener("click", (event) => {
 
 async function startApp() {
   currentPage = 1;
+    await fetchTotalPostsCount();
   const posts = await getPosts(currentPage, postsPerPage);
   renderPosts(posts);
+  checkLoadMoreVisibility();
 }
 
 startApp();
